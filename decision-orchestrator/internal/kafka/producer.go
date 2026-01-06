@@ -11,12 +11,12 @@ type Producer struct {
 	w *kafka.Writer
 }
 
-func New(brokers []string, acks kafka.RequiredAcks, retries int, timeout time.Duration) *Producer {
+func New(brokers []string, retries int, timeout time.Duration) *Producer {
 	return &Producer{
 		w: &kafka.Writer{
 			Addr:         kafka.TCP(brokers...),
 			Balancer:     &kafka.LeastBytes{},
-			RequiredAcks: acks,
+			RequiredAcks: kafka.RequireAll,
 			Async:        false,
 			Transport:    &kafka.Transport{},
 			BatchTimeout: timeout,
